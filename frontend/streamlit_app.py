@@ -521,8 +521,7 @@ with tab_docs:
     st.markdown("### 🔗 GitHub")
     st.markdown(
         "Source code and full documentation:  \n"
-        "[**Lenovo Multi-Agent Sales Intelligence System**](https://github.com/your-org/lenovo-agentic-ai)  \n"
-        "*(Replace with your repository URL after pushing.)*"
+        "[**Lenovo Multi-Agent Sales Intelligence System**](https://github.com/GraceEvangelene/lenovo-agentic-ai)"
     )
 
 with tab_insights:
