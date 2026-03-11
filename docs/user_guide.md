@@ -1,0 +1,76 @@
+# Lenovo AI Sales Intelligence Agent — User Guide
+
+## What the system does
+
+The **Lenovo Multi-Agent Sales Intelligence System** is an agentic AI application that helps Lenovo sales teams (and customers) get laptop recommendations. You ask a question in natural language; the system:
+
+1. **Understands your intent** — e.g. recommendation, comparison, or general search.
+2. **Plans steps** — decides which tools to use (search, filter by price, compare).
+3. **Searches products** — finds Lenovo laptops that match your use case (and optionally budget).
+4. **Compares options** — ranks laptops and provides **pros/cons** (GPU, RAM, price, portability, and use-case fit).
+5. **Adds Sales Insights** — summarizes review signals (ratings, sentiment, themes, highlights, watch-outs).
+
+The workflow is powered by a **multi-agent pipeline** (Planner → Product Agent → Comparison Agent) orchestrated with LangGraph, so you see both the final answer and the reasoning steps.
+
+## Example queries
+
+Try questions like:
+
+- **“Find the best Lenovo laptop for machine learning under $1800.”**
+- **“Compare Lenovo laptops for gaming.”**
+- **“Recommend a Lenovo laptop for college students.”**
+- **“Business laptop under $1500.”**
+- **“Lightweight laptop for travel and productivity.”**
+
+You can mention budget (e.g. “under $1800”), use case (gaming, students, ML, business), or ask for a comparison.
+
+## How to use the app
+
+The app has three tabs: **Chat**, **Docs**, and **Sales Insights**.
+
+### Chat tab
+
+- **Ask a question** in the input box at the bottom (for example: “best Lenovo for college under $1200”).
+- You’ll see:
+  - **Recommended laptops** (ranked)
+  - A **ranked list with pros/cons**
+  - Optional **Agent reasoning steps** (expandable)
+- If nothing matches your budget exactly, the system will show a **warning** and suggest the closest alternatives.
+- If strict filters remove all results, the system can **re-plan and retry** by relaxing constraints (looping reasoning).
+
+**Controls**
+
+- **Clear chat**: resets the conversation.
+- **Refresh**: reloads the page.
+- **View developer insights**: opens a popup showing execution metrics (timing, steps, tools, loops). This is intended for developers and demos.
+
+### Docs tab
+
+- Read the **User guide** and **Developer documentation** directly in the app.
+
+### Sales Insights tab
+
+Use this tab to add review context to the current recommendation:
+
+- **Visual comparison** across recommended laptops:
+  - Average rating (bar chart)
+  - Sentiment mix (stacked bars)
+  - Themes snapshot (table)
+- **Product drilldown**:
+  - Average rating, review count, sentiment split
+  - Top themes, highlights, and watch-outs
+  - (Optional) sales-ready summary if an OpenAI key is configured
+
+## Tips
+
+- **Be specific** — e.g. “machine learning under $1800” or “gaming laptops” gives better results.
+- **Reasoning steps** — use the expander to see how the planner interpreted your query and which tools were used.
+- **Budgets** — if no laptop matches your budget exactly, you’ll still get suggestions with a clear warning.
+
+## Future Scope
+
+- **Integrate user accounts** to save favorite or liked laptops for quick reference.
+- **Enable personalized recommendations** based on browsing history, past interactions, or user preferences.
+- **Add real-time pricing and stock updates** by connecting to Lenovo APIs.
+- **Incorporate multi-modal inputs**, such as images or specifications PDFs, for richer product recommendations.
+- **Implement feedback loops**, allowing the system to learn from user actions and improve recommendation accuracy over time.

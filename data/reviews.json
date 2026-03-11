@@ -1,0 +1,153 @@
+[
+  {
+    "product": "ThinkPad X1 Carbon Gen 11",
+    "reviews": [
+      {"rating": 5, "review": "Lightweight and portable, perfect for business travel.", "sentiment": "positive"},
+      {"rating": 4, "review": "Excellent battery life, but a bit pricey.", "sentiment": "positive"},
+      {"rating": 3, "review": "Keyboard feels slightly cramped for long typing sessions.", "sentiment": "neutral"},
+      {"rating": 5, "review": "Fast and responsive, great for office productivity.", "sentiment": "positive"},
+      {"rating": 4, "review": "Premium feel and build quality, slightly heavy for its class.", "sentiment": "positive"}
+    ]
+  },
+  {
+    "product": "ThinkPad P1 Gen 6",
+    "reviews": [
+      {"rating": 5, "review": "Powerful workstation, ideal for ML and engineering tasks.", "sentiment": "positive"},
+      {"rating": 4, "review": "Runs heavy software smoothly, but fans can be loud.", "sentiment": "positive"},
+      {"rating": 5, "review": "Excellent GPU and RAM for data science workflows.", "sentiment": "positive"},
+      {"rating": 4, "review": "High performance, battery could be better.", "sentiment": "neutral"},
+      {"rating": 5, "review": "Perfect for professionals who need compute-heavy applications.", "sentiment": "positive"}
+    ]
+  },
+  {
+    "product": "ThinkPad X13 Gen 3",
+    "reviews": [
+      {"rating": 4, "review": "Compact and portable, good for students and travel.", "sentiment": "positive"},
+      {"rating": 3, "review": "Battery life is average for all-day use.", "sentiment": "neutral"},
+      {"rating": 5, "review": "Lightweight with decent performance for productivity tasks.", "sentiment": "positive"},
+      {"rating": 4, "review": "Good keyboard and screen, slightly limited GPU.", "sentiment": "neutral"},
+      {"rating": 5, "review": "Overall excellent for on-the-go professionals.", "sentiment": "positive"}
+    ]
+  },
+  {
+    "product": "ThinkPad T14 Gen 4",
+    "reviews": [
+      {"rating": 5, "review": "Reliable business laptop with strong performance.", "sentiment": "positive"},
+      {"rating": 4, "review": "Good security features, screen could be brighter.", "sentiment": "neutral"},
+      {"rating": 4, "review": "Comfortable keyboard and solid build.", "sentiment": "positive"},
+      {"rating": 3, "review": "Average GPU, not suited for graphics-intensive tasks.", "sentiment": "neutral"},
+      {"rating": 5, "review": "Perfect for enterprise use and office productivity.", "sentiment": "positive"}
+    ]
+  },
+  {
+    "product": "ThinkPad E14 Gen 5",
+    "reviews": [
+      {"rating": 4, "review": "Affordable and functional for everyday office work.", "sentiment": "positive"},
+      {"rating": 3, "review": "Build quality is decent for the price.", "sentiment": "neutral"},
+      {"rating": 4, "review": "Runs standard business apps smoothly.", "sentiment": "positive"},
+      {"rating": 3, "review": "Display could be better, but battery is fine.", "sentiment": "neutral"},
+      {"rating": 5, "review": "Great budget laptop for small businesses.", "sentiment": "positive"}
+    ]
+  },
+  {
+    "product": "Legion Pro 5 Gen 8",
+    "reviews": [
+      {"rating": 5, "review": "Excellent GPU for gaming and ML tasks.", "sentiment": "positive"},
+      {"rating": 4, "review": "Runs games and AI models smoothly.", "sentiment": "positive"},
+      {"rating": 4, "review": "Heavier than average, but high performance.", "sentiment": "neutral"},
+      {"rating": 5, "review": "Good cooling system, no thermal throttling.", "sentiment": "positive"},
+      {"rating": 5, "review": "Perfect choice for high-performance computing.", "sentiment": "positive"}
+    ]
+  },
+  {
+    "product": "Legion Slim 7",
+    "reviews": [
+      {"rating": 5, "review": "Thin and powerful, ideal for gaming on the go.", "sentiment": "positive"},
+      {"rating": 4, "review": "Excellent GPU, battery lasts reasonably long.", "sentiment": "positive"},
+      {"rating": 4, "review": "Lightweight for a gaming laptop, but fans are noisy.", "sentiment": "neutral"},
+      {"rating": 5, "review": "Strong CPU and GPU for creative and ML workloads.", "sentiment": "positive"},
+      {"rating": 4, "review": "Great display, but price is slightly high.", "sentiment": "neutral"}
+    ]
+  },
+  {
+    "product": "Legion 5",
+    "reviews": [
+      {"rating": 4, "review": "Balanced gaming laptop with good GPU.", "sentiment": "positive"},
+      {"rating": 3, "review": "Runs most games smoothly, but fans are loud.", "sentiment": "neutral"},
+      {"rating": 5, "review": "Affordable option for students and gamers.", "sentiment": "positive"},
+      {"rating": 4, "review": "Battery life is decent for gaming sessions.", "sentiment": "neutral"},
+      {"rating": 5, "review": "Great performance for price.", "sentiment": "positive"}
+    ]
+  },
+  {
+    "product": "IdeaPad Gaming 3",
+    "reviews": [
+      {"rating": 4, "review": "Good budget gaming laptop.", "sentiment": "positive"},
+      {"rating": 3, "review": "Average display, decent GPU.", "sentiment": "neutral"},
+      {"rating": 4, "review": "Runs casual games and student workloads smoothly.", "sentiment": "positive"},
+      {"rating": 3, "review": "Build quality is basic, but functional.", "sentiment": "neutral"},
+      {"rating": 5, "review": "Excellent value for the price.", "sentiment": "positive"}
+    ]
+  },
+  {
+    "product": "Yoga 9i",
+    "reviews": [
+      {"rating": 5, "review": "Premium 2-in-1, great for creative professionals.", "sentiment": "positive"},
+      {"rating": 4, "review": "Excellent portability and battery life.", "sentiment": "positive"},
+      {"rating": 4, "review": "Screen is vibrant, keyboard is good.", "sentiment": "positive"},
+      {"rating": 3, "review": "Price is on the higher side.", "sentiment": "neutral"},
+      {"rating": 5, "review": "Great for students and work-from-home professionals.", "sentiment": "positive"}
+    ]
+  },
+  {
+    "product": "Yoga Slim 7 Pro",
+    "reviews": [
+      {"rating": 4, "review": "Slim design with good performance.", "sentiment": "positive"},
+      {"rating": 5, "review": "Excellent for productivity and light gaming.", "sentiment": "positive"},
+      {"rating": 4, "review": "Battery lasts all day.", "sentiment": "positive"},
+      {"rating": 3, "review": "Fans can get noisy under load.", "sentiment": "neutral"},
+      {"rating": 5, "review": "Perfect balance of portability and power.", "sentiment": "positive"}
+    ]
+  },
+  {
+    "product": "IdeaPad 5 Pro",
+    "reviews": [
+      {"rating": 4, "review": "Good performance for students and light gaming.", "sentiment": "positive"},
+      {"rating": 4, "review": "Affordable and reliable laptop.", "sentiment": "positive"},
+      {"rating": 3, "review": "Display brightness could be higher.", "sentiment": "neutral"},
+      {"rating": 5, "review": "Runs productivity apps smoothly.", "sentiment": "positive"},
+      {"rating": 4, "review": "Lightweight and portable, battery is decent.", "sentiment": "positive"}
+    ]
+  },
+  {
+    "product": "IdeaPad Slim 3",
+    "reviews": [
+      {"rating": 3, "review": "Basic laptop for students and casual use.", "sentiment": "neutral"},
+      {"rating": 4, "review": "Very affordable, good for web browsing.", "sentiment": "positive"},
+      {"rating": 3, "review": "Limited RAM and GPU, but sufficient for office work.", "sentiment": "neutral"},
+      {"rating": 4, "review": "Lightweight and portable.", "sentiment": "positive"},
+      {"rating": 3, "review": "Battery life is average.", "sentiment": "neutral"}
+    ]
+  },
+  {
+    "product": "ThinkBook 16 Gen 6",
+    "reviews": [
+      {"rating": 4, "review": "Good for multitasking and business workflows.", "sentiment": "positive"},
+      {"rating": 4, "review": "Solid build and performance.", "sentiment": "positive"},
+      {"rating": 3, "review": "Slightly heavier than other laptops in the class.", "sentiment": "neutral"},
+      {"rating": 5, "review": "Excellent display and keyboard.", "sentiment": "positive"},
+      {"rating": 4, "review": "Battery life is decent for workday usage.", "sentiment": "neutral"}
+    ]
+  },
+  {
+    "product": "ThinkPad Z16",
+    "reviews": [
+      {"rating": 5, "review": "High-end performance, perfect for creators.", "sentiment": "positive"},
+      {"rating": 4, "review": "Excellent GPU and CPU combination.", "sentiment": "positive"},
+      {"rating": 4, "review": "Premium feel and design.", "sentiment": "positive"},
+      {"rating": 3, "review": "Price is high but justified by features.", "sentiment": "neutral"},
+      {"rating": 5, "review": "Ideal for professionals needing strong computing power.", "sentiment": "positive"}
+    ]
+  }
+]
+

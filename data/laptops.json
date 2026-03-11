@@ -1,0 +1,152 @@
+[
+  {
+    "name": "ThinkPad X1 Carbon Gen 11",
+    "price": 1799,
+    "cpu": "Intel Core i7-1365U",
+    "gpu": "Intel Iris Xe",
+    "ram": "16GB",
+    "weight": "2.48 lbs",
+    "use_case": "business, portability, productivity",
+    "description": "Ultra-light premium business laptop with long battery life and durable ThinkPad design."
+  },
+  {
+    "name": "ThinkPad P1 Gen 6",
+    "price": 2299,
+    "cpu": "Intel Core i9-13900H",
+    "gpu": "NVIDIA RTX A2000",
+    "ram": "32GB",
+    "weight": "4.0 lbs",
+    "use_case": "machine learning, workstation, engineering",
+    "description": "Powerful mobile workstation designed for engineers, data scientists, and creative professionals."
+  },
+  {
+    "name": "ThinkPad X13 Gen 3",
+    "price": 1399,
+    "cpu": "Intel Core i7-1260P",
+    "gpu": "Intel Iris Xe",
+    "ram": "16GB",
+    "weight": "2.7 lbs",
+    "use_case": "business, students, portability",
+    "description": "Compact ThinkPad built for professionals who travel frequently."
+  },
+  {
+    "name": "ThinkPad T14 Gen 4",
+    "price": 1599,
+    "cpu": "Intel Core i7-1360P",
+    "gpu": "Intel Iris Xe",
+    "ram": "16GB",
+    "weight": "3.23 lbs",
+    "use_case": "business, productivity, remote work",
+    "description": "Reliable business laptop offering strong performance and enterprise security features."
+  },
+  {
+    "name": "ThinkPad E14 Gen 5",
+    "price": 999,
+    "cpu": "Intel Core i5-1335U",
+    "gpu": "Intel Iris Xe",
+    "ram": "16GB",
+    "weight": "3.5 lbs",
+    "use_case": "business, budget, productivity",
+    "description": "Affordable ThinkPad option ideal for small businesses and everyday office work."
+  },
+  {
+    "name": "Legion Pro 5 Gen 8",
+    "price": 1699,
+    "cpu": "AMD Ryzen 7 7745HX",
+    "gpu": "NVIDIA RTX 4070",
+    "ram": "32GB",
+    "weight": "5.5 lbs",
+    "use_case": "gaming, machine learning, high performance",
+    "description": "High-performance gaming laptop with powerful GPU ideal for gaming and AI workloads."
+  },
+  {
+    "name": "Legion Slim 7",
+    "price": 1899,
+    "cpu": "AMD Ryzen 9 6900HX",
+    "gpu": "NVIDIA RTX 4060",
+    "ram": "32GB",
+    "weight": "4.4 lbs",
+    "use_case": "gaming, creators, portability",
+    "description": "Thin and powerful gaming laptop designed for creators and gamers on the go."
+  },
+  {
+    "name": "Legion 5",
+    "price": 1399,
+    "cpu": "AMD Ryzen 7 6800H",
+    "gpu": "NVIDIA RTX 3060",
+    "ram": "16GB",
+    "weight": "5.2 lbs",
+    "use_case": "gaming, students, performance",
+    "description": "Balanced gaming laptop with strong graphics performance for gaming and development."
+  },
+  {
+    "name": "IdeaPad Gaming 3",
+    "price": 899,
+    "cpu": "AMD Ryzen 5 6600H",
+    "gpu": "NVIDIA RTX 3050",
+    "ram": "16GB",
+    "weight": "4.9 lbs",
+    "use_case": "gaming, students, budget",
+    "description": "Budget-friendly gaming laptop suitable for students and casual gamers."
+  },
+  {
+    "name": "Yoga 9i",
+    "price": 1499,
+    "cpu": "Intel Core i7-1360P",
+    "gpu": "Intel Iris Xe",
+    "ram": "16GB",
+    "weight": "3.0 lbs",
+    "use_case": "students, creativity, portability",
+    "description": "Premium 2-in-1 convertible laptop ideal for students and creative professionals."
+  },
+  {
+    "name": "Yoga Slim 7 Pro",
+    "price": 1399,
+    "cpu": "AMD Ryzen 7 6800HS",
+    "gpu": "NVIDIA RTX 3050",
+    "ram": "16GB",
+    "weight": "3.2 lbs",
+    "use_case": "creators, portability, productivity",
+    "description": "Slim laptop with strong performance for creators and professionals."
+  },
+  {
+    "name": "IdeaPad 5 Pro",
+    "price": 1099,
+    "cpu": "AMD Ryzen 7 7735HS",
+    "gpu": "NVIDIA RTX 3050",
+    "ram": "16GB",
+    "weight": "3.9 lbs",
+    "use_case": "students, productivity, light gaming",
+    "description": "Versatile laptop with good performance for productivity and entertainment."
+  },
+  {
+    "name": "IdeaPad Slim 3",
+    "price": 599,
+    "cpu": "Intel Core i3-1215U",
+    "gpu": "Intel UHD Graphics",
+    "ram": "8GB",
+    "weight": "3.7 lbs",
+    "use_case": "students, budget, everyday use",
+    "description": "Entry-level laptop suitable for web browsing, documents, and basic tasks."
+  },
+  {
+    "name": "ThinkBook 16 Gen 6",
+    "price": 1199,
+    "cpu": "Intel Core i7-13700H",
+    "gpu": "Intel Iris Xe",
+    "ram": "16GB",
+    "weight": "4.1 lbs",
+    "use_case": "business, productivity, multitasking",
+    "description": "Business-focused laptop with strong performance for multitasking and office workflows."
+  },
+  {
+    "name": "ThinkPad Z16",
+    "price": 2099,
+    "cpu": "AMD Ryzen 9 Pro 6950H",
+    "gpu": "AMD Radeon RX 6500M",
+    "ram": "32GB",
+    "weight": "4.3 lbs",
+    "use_case": "creators, machine learning, professionals",
+    "description": "High-end ThinkPad designed for creators and professionals needing strong performance."
+  }
+]
