@@ -5,13 +5,12 @@ import re
 import os
 from typing import Any
 
-# Optional LangChain
-try:
-    from langchain_core.messages import HumanMessage, SystemMessage
-    from langchain_openai import ChatOpenAI
-    LANGCHAIN_AVAILABLE = True
-except ImportError:
-    LANGCHAIN_AVAILABLE = False
+from openai import OpenAI
+
+NVIDIA_API_KEY = os.getenv("NVIDIA_API_KEY")
+client: OpenAI | None = None
+if NVIDIA_API_KEY:
+    client = OpenAI(api_key=NVIDIA_API_KEY, base_url="https://integrate.api.nvidia.com/v1")
 
 PLANNER_SYSTEM = """You are a sales planning agent for Lenovo. Analyze the user's query and output a JSON object with:
 - "intent": one of "laptop_recommendation", "compare_laptops", "product_search", "general"
@@ -85,15 +84,17 @@ def run_planner(query: str) -> tuple[dict[str, Any], str]:
     """
     reasoning_parts = []
 
-    if LANGCHAIN_AVAILABLE and os.getenv("OPENAI_API_KEY"):
+    if client is not None:
         try:
-            llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)
-            messages = [
-                SystemMessage(content=PLANNER_SYSTEM),
-                HumanMessage(content=query),
-            ]
-            response = llm.invoke(messages)
-            content = response.content.strip()
+            response = client.chat.completions.create(
+                model="nvidia/nemotron-3-super-120b-a12b",
+                messages=[
+                    {"role": "system", "content": PLANNER_SYSTEM},
+                    {"role": "user", "content": query},
+                ],
+                temperature=0,
+            )
+            content = (response.choices[0].message.content or "").strip()
             reasoning_parts.append(f"Planner (LLM) raw output: {content[:200]}...")
             # Extract JSON from response (handle markdown code blocks)
             json_match = re.search(r"\{[^{}]*\}", content, re.DOTALL)

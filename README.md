@@ -1,13 +1,13 @@
 # Lenovo Multi-Agent Sales Intelligence System
 
-An **agentic AI** demo that helps Lenovo sales teams recommend laptops to customers. The system uses a multi-agent pipeline (Planner → Product Agent → Comparison Agent) orchestrated with **LangGraph** and exposes a **Streamlit** chat interface.
+An **agentic AI** demo that helps Lenovo sales teams recommend laptops to customers. The system uses a multi-agent pipeline (Planner → Product Agent → Replanner → Comparison Agent → Sales Insights Agent) orchestrated with **LangGraph**, powered by **NVIDIA NIM models** for reasoning and generation, and exposes a **Streamlit** chat interface.
 
 ## Project description
 
 Users ask questions in natural language (e.g. *“Find the best Lenovo laptop for machine learning under $1800”*, *“Compare Lenovo laptops for gaming”*, *“Recommend a Lenovo laptop for college students”*). The system:
 
 1. **Understands intent** — Planner Agent analyzes the query and decides which tools to use.
-2. **Retrieves products** — Product Agent uses semantic/keyword search and optional price filtering.
+2. **Retrieves products** — Product Agent uses semantic/keyword search and price filtering.
 3. **Compares and recommends** — Comparison Agent evaluates candidates and returns a clear recommendation plus reasoning.
 
 This mirrors enterprise agentic setups where a model plans steps and uses tools, rather than acting as a single chatbot.
@@ -21,7 +21,7 @@ This mirrors enterprise agentic setups where a model plans steps and uses tools,
                                       │
                                       ▼
 ┌─────────────────────────────────────────────────────────────────────────┐
-│  PLANNER AGENT                                                           │
+│  PLANNER AGENT  (NIM: nemotron-3-super-120b-instruct)                   │
 │  • Analyze query → intent, use_case, budget                              │
 │  • Decide tools: search_products, filter_by_price, compare_products      │
 └─────────────────────────────────────────────────────────────────────────┘
@@ -35,9 +35,21 @@ This mirrors enterprise agentic setups where a model plans steps and uses tools,
                                       │
                                       ▼
 ┌─────────────────────────────────────────────────────────────────────────┐
-│  COMPARISON AGENT                                                        │
+│  REPLANNER (looping reasoning)                                           │
+│  • If filters remove all candidates, relax constraints and retry         │
+└─────────────────────────────────────────────────────────────────────────┘
+                                      │
+                                      ▼
+┌─────────────────────────────────────────────────────────────────────────┐
+│  COMPARISON AGENT  (NIM: nemotron-3-nano-30b-instruct)                  │
 │  • compare_products(products)  →  structured comparison                  │
-│  • LLM or template  →  final recommendation text                       │
+│  • NIM or template  →  final recommendation text                         │
+└─────────────────────────────────────────────────────────────────────────┘
+                                      │
+                                      ▼
+┌─────────────────────────────────────────────────────────────────────────┐
+│  SALES INSIGHTS AGENT  (NIM: llama-3.1-nemotron-70b-instruct)           │
+│  • Summarize reviews: ratings, sentiment, themes, highlights, watch-outs│
 └─────────────────────────────────────────────────────────────────────────┘
                                       │
                                       ▼
@@ -52,18 +64,22 @@ This mirrors enterprise agentic setups where a model plans steps and uses tools,
 ```
 lenovo-agentic-ai/
 ├── data/
-│   └── laptops.json           # Lenovo laptop catalog
+│   ├── laptops.json           # Lenovo laptop catalog
+│   └── reviews.json           # Review dataset for Sales Insights
 ├── agents/
-│   ├── planner_agent.py       # Intent + tool selection
+│   ├── planner_agent.py       # Intent + tool selection (NIM planner)
 │   ├── product_agent.py       # Search + filter
-│   └── comparison_agent.py    # Compare + recommend
+│   ├── comparison_agent.py    # Compare + recommend (ranked pros/cons, NIM writer)
+│   └── sales_insights_agent.py    # Sales review summaries (NIM optional)
 ├── tools/
-│   ├── search_products.py      # Semantic/keyword search (FAISS optional)
-│   └── filter_products.py     # filter_by_price, compare_products
+│   ├── search_products.py      # Semantic/keyword search (FAISS with keyword fallback)
+│   ├── filter_products.py     # filter_by_price, compare_products
+│   ├── review_insights.py     # Aggregate reviews into metrics
+│   └── rerank_products.py     # Optional NIM-based reranker for FAISS results
 ├── graph/
-│   └── agent_graph.py         # LangGraph workflow
+│   └── agent_graph.py         # LangGraph workflow (with replanning & sales_insights node)
 ├── frontend/
-│   └── streamlit_app.py       # Chat UI + Documentation tab
+│   └── streamlit_app.py       # Chat UI + Sales Insights + Docs + Dev insights popup
 ├── docs/
 │   ├── user_guide.md
 │   └── developer_guide.md
@@ -92,15 +108,25 @@ source venv/bin/activate   # Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-### 4. (Optional) OpenAI for better answers
+### 4. (Optional) NVIDIA NIM for better answers
 
-Set your API key for LLM-powered planner and comparison:
+Set your NVIDIA API key for NIM-powered planner, comparison, sales insights, and optional reranking.
 
-```bash
-export OPENAI_API_KEY=sk-...
-```
+- **Locally (for development):**
 
-Without it, the app still runs using rule-based planning and template recommendations.
+  Create `.streamlit/secrets.toml`:
+
+  ```toml
+  NVIDIA_API_KEY = "nvapi-xxxx-your-real-key"
+  ```
+
+  `.streamlit/` is ignored by git, so the key is not committed.
+
+- **On Streamlit Cloud:**
+
+  Add `NVIDIA_API_KEY` under **App → Settings → Secrets**.
+
+Without it, the app still runs using rule-based planning, keyword/FAISS search, and deterministic summaries.
 
 ### 5. Run the app
 
@@ -120,15 +146,18 @@ Open the URL shown (e.g. `http://localhost:8501`). Use the **Chat** tab to ask q
 
 ## Tech stack
 
-| Component | Technology |
-|-----------|------------|
-| Orchestration | LangGraph |
-| LLM (optional) | LangChain + OpenAI |
-| Semantic search | SentenceTransformers + FAISS |
-| Frontend | Streamlit |
-| Language | Python 3.10+ |
+| Component       | Technology / Model                                      |
+|-----------------|---------------------------------------------------------|
+| Orchestration   | LangGraph                                               |
+| Planner LLM     | NVIDIA NIM: `nvidia/nemotron-3-super-120b-instruct`     |
+| Writer LLM      | NVIDIA NIM: `nvidia/nemotron-3-nano-30b-instruct`       |
+| Sales Insights  | NVIDIA NIM: `nvidia/llama-3.1-nemotron-70b-instruct`    |
+| Reranker        | NVIDIA NIM: `nvidia/nv-rerankqa-mistral-4b-v3`          |
+| Semantic search | SentenceTransformers + FAISS                            |
+| Frontend        | Streamlit                                               |
+| Language        | Python 3.10+                                            |
 
-All of these can be used with free tiers or local/open-source options.
+All of these can be used with free tiers or local/open-source runs; NIM usage depends on providing a valid `NVIDIA_API_KEY`.
 
 ## Future improvements
 

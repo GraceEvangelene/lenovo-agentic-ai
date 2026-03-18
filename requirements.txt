@@ -3,8 +3,9 @@
 
 # Core orchestration & LLM
 langgraph>=0.2.0
-langchain-core>=0.3.0
-langchain-openai>=0.2.0
+
+# NVIDIA NIM (OpenAI-compatible client)
+openai>=1.37.0
 
 # Semantic search (optional but recommended)
 sentence-transformers>=2.2.0

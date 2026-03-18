@@ -4,15 +4,14 @@ from __future__ import annotations
 
 import os
 
-try:
-    from langchain_core.messages import HumanMessage, SystemMessage
-    from langchain_openai import ChatOpenAI
-
-    LANGCHAIN_AVAILABLE = True
-except ImportError:
-    LANGCHAIN_AVAILABLE = False
+from openai import OpenAI
 
 from tools.review_insights import sales_insights_for_products
+
+NVIDIA_API_KEY = os.getenv("NVIDIA_API_KEY")
+client: OpenAI | None = None
+if NVIDIA_API_KEY:
+    client = OpenAI(api_key=NVIDIA_API_KEY, base_url="https://integrate.api.nvidia.com/v1")
 
 
 SYSTEM = """You are a sales insights agent. Given structured review summaries per Lenovo product, write:
@@ -27,20 +26,24 @@ def run_sales_insights_agent(products: list[dict]) -> tuple[dict, str]:
     Returns (insights_dict, reasoning_string).
     insights_dict includes:
       - per_product: structured signals from reviews.json
-      - narrative (optional): LLM-written sales bullets if OPENAI_API_KEY is set
+      - narrative: LLM-written sales bullets when NVIDIA_API_KEY is set (empty otherwise)
     """
     names = [p.get("name") for p in (products or []) if p.get("name")]
     per_product = sales_insights_for_products(names)
     reasoning = f"Loaded review insights for {len(names)} products."
 
-    if LANGCHAIN_AVAILABLE and os.getenv("OPENAI_API_KEY") and names:
+    if client is not None and names:
         try:
-            llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.2)
-            messages = [
-                SystemMessage(content=SYSTEM),
-                HumanMessage(content=str(per_product)),
-            ]
-            resp = llm.invoke(messages).content.strip()
+            resp = client.chat.completions.create(
+                model="meta/llama-3.1-70b-instruct",
+                messages=[
+                    {"role": "system", "content": SYSTEM},
+                    {"role": "user", "content": str(per_product)},
+                ],
+                temperature=0.2,
+            )
+            text = (resp.choices[0].message.content or "").strip()
+            resp = text
             return {"per_product": per_product, "narrative": resp}, reasoning
         except Exception as e:
             reasoning += f" LLM failed ({e}); using structured insights only."

@@ -7,6 +7,7 @@ import sys
 from pathlib import Path
 import base64
 import html
+import os
 
 # Add project root for imports
 ROOT = Path(__file__).resolve().parent.parent
@@ -26,6 +27,10 @@ try:
     _md = MarkdownIt("commonmark", {"html": False}).enable("strikethrough").enable("table")
 except Exception:
     _md = None
+
+# Wire NVIDIA API key from Streamlit secrets into environment for NIM clients
+if "NVIDIA_API_KEY" in st.secrets:
+    os.environ.setdefault("NVIDIA_API_KEY", st.secrets["NVIDIA_API_KEY"])
 
 # Logo paths (tab: LS_logo or L_logo, navbar: L_logo)
 DATA_DIR = ROOT / "data"

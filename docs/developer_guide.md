@@ -28,7 +28,7 @@ Final Response (recommendation + reasoning + product list + sales insights + dev
 
 ## Agent workflow
 
-### 1. Planner Agent
+### 1. Planner Agent (NIM: Reasoning Brain)
 
 - **Role:** Analyze the user query and produce a structured plan.
 - **Input:** Raw user message (string).
@@ -37,7 +37,10 @@ Final Response (recommendation + reasoning + product list + sales insights + dev
   - `use_case`: e.g. `machine learning`, `gaming`, `students`, `business`
   - `budget`: max price in dollars or `null`
   - `tools`: list of tools to run, e.g. `["search_products", "filter_by_price", "compare_products"]`
-- **Implementation:** Uses OpenAI (if `OPENAI_API_KEY` is set) with a system prompt that asks for JSON; otherwise a rule-based fallback parses budget and use-case keywords.
+- **Implementation:**
+  - When `NVIDIA_API_KEY` is set, uses **NVIDIA NIM** via the OpenAI client:
+    - Model: `nvidia/nemotron-3-super-120b-instruct`
+  - Otherwise, falls back to rule-based parsing of budget/use-case keywords.
 
 ### 2. Product Agent
 
@@ -50,22 +53,27 @@ Final Response (recommendation + reasoning + product list + sales insights + dev
   - Returns up to a small set of candidates (e.g. 6) for the Comparison Agent.
   - If filtering removes all candidates, it can return an empty list to trigger replanning.
 
-### 3. Comparison Agent
+### 3. Comparison Agent (NIM: Fast Writer)
 
 - **Role:** Compare the candidate laptops and produce a natural-language recommendation.
 - **Input:** List of products, original user query, and plan.
 - **Output:** Recommendation text and a short reasoning string.
-- **Behavior:**
+-- **Behavior:**
   - Ranks candidates and outputs a **ranked list with pros/cons** (GPU tier, RAM, price/budget closeness, weight/portability, and use-case fit).
   - If nothing matches budget exactly (after replanning), it emits a **warning** and suggests closest alternatives.
-  - If OpenAI is available, an LLM can generate a more polished narrative; otherwise it produces a deterministic ranked summary.
+  - When `NVIDIA_API_KEY` is set, calls **NVIDIA NIM** for the final narrative:
+    - Model: `nvidia/nemotron-3-nano-30b-instruct`
+  - Otherwise, produces a deterministic ranked markdown summary.
 
-### 4. Sales Insights Agent
+### 4. Sales Insights Agent (NIM: Sales Writer)
 
 - **Role:** Add sales-ready context from review signals.
 - **Input:** The final ranked product list.
 - **Output:** `sales_insights` dict with per-product metrics and (optional) narrative.
-- **Behavior:** Summarizes `data/reviews.json` into average rating, sentiment mix, top themes, highlight quotes, and watch-outs. If OpenAI is available, it can generate concise selling points and watch-outs.
+- **Behavior:** Summarizes `data/reviews.json` into average rating, sentiment mix, top themes, highlight quotes, and watch-outs.
+  - When `NVIDIA_API_KEY` is set, uses **NVIDIA NIM** to generate concise selling points and watch-outs:
+    - Model: `nvidia/llama-3.1-nemotron-70b-instruct`
+  - Otherwise, only the structured review summary is used.
 
 ## LangGraph orchestration
 
@@ -93,7 +101,7 @@ The graph runner records basic execution metrics in `dev_metrics`:
 
 The Streamlit UI exposes these in a **“View developer insights”** popup for demo/debugging.
 
-## Tools
+## Tools and models
 
 | Tool | Module | Purpose |
 |------|--------|--------|
@@ -101,6 +109,7 @@ The Streamlit UI exposes these in a **“View developer insights”** popup for 
 | `filter_by_price(products, max_price)` | `tools/filter_products.py` | Filters a list of product dicts by `price <= max_price`. |
 | `compare_products(products)` | `tools/filter_products.py` | Builds a text comparison of products (GPU, RAM, price, use case, description) for the Comparison Agent. |
 | `sales_insights_for_products(product_names)` | `tools/review_insights.py` | Returns per-product review summaries (avg rating, sentiment mix, themes, highlights, watch-outs). |
+| `rerank_products(query, products)` | `tools/rerank_products.py` | Uses **`nvidia/nv-rerankqa-mistral-4b-v3`** via NIM to rerank semantic/FAISS candidates. |
 
 Product dicts follow the schema in `data/laptops.json`: `name`, `price`, `cpu`, `gpu`, `ram`, `weight`, `use_case`, `description`.
 
@@ -108,10 +117,9 @@ Product dicts follow the schema in `data/laptops.json`: `name`, `price`, `cpu`, 
 
 - **Python 3.10+**
 - **LangGraph** — graph orchestration and state.
-- **LangChain** — optional; used for OpenAI chat (planner and comparison) when `OPENAI_API_KEY` is set.
-- **OpenAI** — optional; improves planner and comparison quality.
-- **SentenceTransformers + FAISS** — optional; improves semantic product search.
-- **Streamlit** — web UI (chat + documentation tab).
+- **NVIDIA NIM (via OpenAI Python client)** — planner (`nemotron-3-super-120b`), comparison (`nemotron-3-nano-30b`), sales insights (`llama-3.1-nemotron-70b`), and rerank (`nv-rerankqa-mistral-4b-v3`) when `NVIDIA_API_KEY` is set.
+- **SentenceTransformers + FAISS** — semantic product search.
+- **Streamlit** — web UI (Chat, Sales Insights, Docs tabs).
 
 ## Extending the system
 

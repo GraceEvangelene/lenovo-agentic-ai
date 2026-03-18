@@ -5,18 +5,18 @@ import sys
 from pathlib import Path
 import re
 
+from openai import OpenAI
+
 _root = Path(__file__).resolve().parent.parent
 if str(_root) not in sys.path:
     sys.path.insert(0, str(_root))
 
 from tools.filter_products import compare_products
 
-try:
-    from langchain_core.messages import HumanMessage, SystemMessage
-    from langchain_openai import ChatOpenAI
-    LANGCHAIN_AVAILABLE = True
-except ImportError:
-    LANGCHAIN_AVAILABLE = False
+NVIDIA_API_KEY = os.getenv("NVIDIA_API_KEY")
+client: OpenAI | None = None
+if NVIDIA_API_KEY:
+    client = OpenAI(api_key=NVIDIA_API_KEY, base_url="https://integrate.api.nvidia.com/v1")
 
 
 COMPARISON_SYSTEM = """You are a Lenovo sales expert. Given a comparison of Lenovo laptops, write a short recommendation (2-4 paragraphs) that:
@@ -180,21 +180,26 @@ def run_comparison_agent(products: list[dict], user_query: str, plan: dict) -> t
     comparison_text = compare_products(ranked)
     reasoning = f"Ranked {len(ranked)} products and generated pros/cons."
 
-    if LANGCHAIN_AVAILABLE and os.getenv("OPENAI_API_KEY") and products:
+    if client is not None and products:
         try:
-            llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.3)
-            messages = [
-                SystemMessage(content=COMPARISON_SYSTEM),
-                HumanMessage(content=f"User request: {user_query}\n\n{comparison_text}"),
-            ]
-            response = llm.invoke(messages)
-            return response.content.strip(), reasoning
+            response = client.chat.completions.create(
+                model="nvidia/nemotron-3-nano-30b-a3b",
+                messages=[
+                    {"role": "system", "content": COMPARISON_SYSTEM},
+                    {
+                        "role": "user",
+                        "content": f"User request: {user_query}\n\n{comparison_text}",
+                    },
+                ],
+                temperature=0.3,
+            )
+            return (response.choices[0].message.content or "").strip(), reasoning
         except Exception as e:
             reasoning += f"; LLM failed ({e}), using template."
 
     # Template-based ranked recommendation with pros/cons when no LLM
-    if not os.getenv("OPENAI_API_KEY"):
-        reasoning += " (No OPENAI_API_KEY set; using non-LLM summary.)"
+    if client is None:
+        reasoning += " (No NVIDIA_API_KEY set; using non-LLM summary.)"
     use_case = plan.get("use_case", "general")
     budget = plan.get("budget")
 
@@ -202,9 +207,10 @@ def run_comparison_agent(products: list[dict], user_query: str, plan: dict) -> t
         return "No products to compare.", reasoning
 
     lines: list[str] = []
-    if not os.getenv("OPENAI_API_KEY"):
+    if client is None:
         lines.append(
-            "> Note: This would be a better narrative summary with an OpenAI key, but I'm currently out of tokens.\n"
+            "> Note: This would be a better narrative summary with a configured NVIDIA NIM key, "
+            "but I'm currently running in non-LLM mode.\n"
         )
     if budget:
         b = float(budget)
